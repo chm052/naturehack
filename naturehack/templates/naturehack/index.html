@@ -206,9 +206,40 @@
       var walksList = createWalksList(JSON.parse(response));
       container.appendChild(walksList);
     }
+    
+   function clearNode(node) {
+     while (node.firstChild) {
+       node.removeChild(node.firstChild);
+     }
+   }
 
     function useStuffData(response) {
-      
+      console.log('"' + response + '"');
+      var doc = document;
+      var res = JSON.parse(response);
+      var hikrCheckoffList = createStuffList(res)
+      var container = document.getElementById('container');
+      clearNode(container);
+      container.appendChild(hikrCheckoffList); 
+    }
+
+    function createStuffList(res) {
+      var doc = document;
+      var hikrCheckoffList = doc.createElement('ul');
+      hikrCheckoffList.classList.add('hikr__checkoff');
+
+      res.response.forEach(function(species) {
+        var item = doc.createElement('li');
+        item.classList.add('hikr__checkoff-item');
+
+        var checkBox = doc.createElement('input')
+
+
+        item.innerHTML = species.name;
+
+        hikrCheckoffList.appendChild(item);
+      });
+      return hikrCheckoffList;
     }
 
     function walkClickHandler(e) {

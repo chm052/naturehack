@@ -89,8 +89,8 @@ class FloraResourceSearcher:
 
     def search(self):
         return self.search_controller.get_occurrence_search_search({
-            'decimal_latitude': self.x,
-            'decimal_longitude': self.y,
+            'decimalLatitude': self.x,
+            'decimalLongitude': self.y,
             'limit': self.limit,
             'radius':self.radius,
         })

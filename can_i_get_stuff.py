@@ -95,7 +95,7 @@ class FloraResourceSearcher:
             'radius':self.radius,
         })
 
-class Flora:
+class Flora(object):
   def __init__(self, lat, long, genericName, scientificName, references):
     self.lat = lat
     self.long = long
@@ -145,7 +145,7 @@ class FaunaBuilder(FloraBuilder):
         flora = []
         #print self.floraDict
         for florum in self.floraDict['occurrences']:
-            flora.append(Flora(florum['decimalLatitude'],
+            flora.append(Fauna(florum['decimalLatitude'],
                     florum['decimalLongitude'],
                     florum['raw_scientificName'],
                     florum['raw_scientificName'],
@@ -153,4 +153,6 @@ class FaunaBuilder(FloraBuilder):
         return flora
 
 class Fauna(Flora):
-    pass
+  def __init__(self, lat, long, genericName, scientificName, references):
+    super(Fauna, self).__init__(lat, long, genericName, scientificName, references)
+    self.type = 'bird'

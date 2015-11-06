@@ -288,6 +288,7 @@
     // Get the data
     var walksUrl = '../naturehack';
     var stuffUrl = '../naturehack/flora';
+    var faunaUrl = '../naturehack/fauna';
 
     uxhr(walksUrl, '', {
       method: 'GET',
@@ -306,7 +307,7 @@
 
       query += 'long=' + long + '&lat=' + lat;
 
-      uxhr(stuffUrl, query, {
+      uxhr(faunaUrl, query, {
         method: 'GET',
         complete: complete,
         success: function(response) { 

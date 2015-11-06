@@ -4,7 +4,7 @@ from AtlasOfLivingAustraliaOccurrencesLib import OccurrenceController
 
 class TracksResourceLocation:
   layer = 753
-  max_results = 10
+  max_results = 100
   key = '2342af39f38841248750a72eb5a1a0c5'
   radius = 20000  
 
@@ -102,6 +102,7 @@ class Flora:
     self.genericName = genericName
     self.scienticName = scientificName
     self.references = references
+    self.type = 'plant'
 
   def asJson(self):
     return json.dumps(self.__dict__)

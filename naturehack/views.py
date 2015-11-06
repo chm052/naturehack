@@ -12,6 +12,9 @@ class DeepEncoder(JSONEncoder):
         return o.__dict__
 
 def homepage(request):
+    #Auckland
+    #loc = TracksResourceLocation(-36.8406 , 174.7400)
+    #Wellington
     loc = TracksResourceLocation(-41.2889, 174.7772)
     r = requests.get(loc.getUri(), loc.getRequestParams())
     ts = TracksBuilder(r.json()).getTracks()

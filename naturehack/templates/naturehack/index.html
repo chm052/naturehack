@@ -249,7 +249,7 @@
 
     // Get the data
     var walksUrl = '../naturehack';
-    var stuffUrl = '../naturehack/stuff';
+    var stuffUrl = '../naturehack/flora';
 
     uxhr(walksUrl, '', {
       method: 'GET',
@@ -316,7 +316,7 @@
 
         var nameEl = doc.createElement('div');
         nameEl.classList.add('hikr__checkoff-name');
-        nameEl.innerHTML = species.name;
+        nameEl.innerHTML = species.genericName;
 
         var iconEl = doc.createElement('em')
         iconEl.classList.add('hikr__checkoff-icon');

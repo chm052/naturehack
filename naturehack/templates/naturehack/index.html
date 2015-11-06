@@ -136,7 +136,9 @@
   <body>
     <div id="container" class="hikr">
       <h1>Hikr</h1>
-        <button id="curr" class="current-location">Get Data For Current Location</button>
+        <div id="currentlocationcontainer">
+          <button id="curr" class="current-location">Get Data For Current Location</button>
+        </div>
     </div>
   </body>
   <script>
@@ -271,7 +273,12 @@
       uxhr(stuffUrl, query, {
         method: 'GET',
         complete: complete,
-        success: useStuffData,
+        success: function(response) { 
+          var res = JSON.parse(response);
+          var hikrCheckoffList = createStuffList(res);
+          var target = document.getElementById('currentlocationcontainer');
+          target.appendChild(hikrCheckoffList); 
+        },
         error: error
       });
     }

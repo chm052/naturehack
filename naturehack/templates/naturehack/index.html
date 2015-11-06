@@ -179,7 +179,9 @@
       };
 
     }));
-
+    String.prototype.toProperCase = function () {
+      return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    };
 
     // Get the data
     var walksUrl = '../naturehack';
@@ -278,7 +280,7 @@
 
         itemButton = doc.createElement('button');
         itemButton.classList.add('hikr__walks-button', 'btn');
-        itemButton.innerHTML = walk.name;
+        itemButton.innerHTML = walk.name.toProperCase();
         itemButton.setAttribute('latitude', walk.lat);
         itemButton.setAttribute('longitude', walk.long);
         itemButton.onclick = walkClickHandler;

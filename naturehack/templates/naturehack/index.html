@@ -213,16 +213,6 @@
      }
    }
 
-    function useStuffData(response) {
-      console.log('"' + response + '"');
-      var doc = document;
-      var res = JSON.parse(response);
-      var hikrCheckoffList = createStuffList(res)
-      var container = document.getElementById('container');
-      clearNode(container);
-      container.appendChild(hikrCheckoffList); 
-    }
-
     function createStuffList(res) {
       var doc = document;
       var hikrCheckoffList = doc.createElement('ul');
@@ -232,10 +222,22 @@
         var item = doc.createElement('li');
         item.classList.add('hikr__checkoff-item');
 
-        var checkBox = doc.createElement('input')
+        var checkbox = doc.createElement('input');
+        checkbox.setAttribute('type', 'checkbox');
+        checkbox.classList.add('hikr__checkoff-check');
 
+        var nameEl = doc.createElement('div');
+        nameEl.classList.add('hikr__checkoff-name');
+        nameEl.innerHTML = species.name;
 
-        item.innerHTML = species.name;
+        var iconEl = doc.createElement('em')
+        iconEl.classList.add('hikr__checkoff-icon');
+        iconEl.classList.add(species.type);
+        iconEl.innerHTML = "hey"
+
+        item.appendChild(checkbox);
+        item.appendChild(nameEl);
+        item.appendChild(iconEl);
 
         hikrCheckoffList.appendChild(item);
       });
@@ -253,7 +255,11 @@
       uxhr(stuffUrl, query, {
         method: 'GET',
         complete: complete,
-        success: useStuffData,
+        success: function(response) { 
+          var res = JSON.parse(response);
+          var hikrCheckoffList = createStuffList(res)
+          target.parentNode.appendChild(hikrCheckoffList); 
+        },
         error: error
       });
     }

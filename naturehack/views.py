@@ -22,7 +22,12 @@ def stuff(request):
     long = float(request.GET.get('long'))
     print "lat: %s long: %s" % (lat, long)
     #TODO: use lat and long to search for stuff...
-    return HttpResponse('[{"name": "Kiwi","type": "bird"},{"name": "Kaka","type": "bird"},{"name": "Tui","name": "bird"},{"name": "Kauri","type": "plant}]')    
+    return JsonResponse({"response": [
+       {"name": "Kiwi" , "type": "bird" },
+       {"name": "Kaka" , "type": "bird" },
+       {"name": "Tui"  , "type": "bird" },
+       {"name": "Kauri", "type": "plant"}
+    ]})
 
 def index(request):
 

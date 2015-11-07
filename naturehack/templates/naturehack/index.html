@@ -29,10 +29,15 @@
       }
 
       body {
+        font-family: helvetica, 'sans-serif';
         line-height:1;
+        background-color: #525265;
+        background-image: url('http://www.estero.co.nz/new/wp-content/uploads/2014/03/45901_new-zealand.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
       }
 
-      article, aside, details, figcaption, figure, 
+      article, aside, details, figcaption, figure,
       footer, header, menu, nav, section {
         display:block;
       }
@@ -49,14 +54,42 @@
       button.btn {
         background-color: transparent;
         border: none;
+        color: inherit;
+        font-weight: inherit;
         padding: 5px 10px;
+        text-align: left;
+        text-shadow: 1px 1px 2px rgba(150, 150, 150, 0.5);
+        width: 100%;
       }
+
+      .hikr {
+        background-color: #3B5998;
+        border-radius: 3px;
+        color: white;
+        font-weight: bold;
+        margin: 0 auto;
+        opacity: 0.9;
+        padding: 10px;
+        margin-top: 40px;
+        max-width: 100%;
+        min-width: 350px;
+        width: 50%;
+
+      }
+
+      h1 {
+        font-size: 30px;
+        margin: 20px 0;
+        text-align: center;
+      }
+
 
     </style>
   </head>
   <body>
-    <h1>Hikr</h1>
-    <div id="container"></div>
+    <div id="container" class="hikr">
+      <h1>Hikr</h1>
+    </div>
   </body>
   <script>
     'use strict';
@@ -175,13 +208,14 @@
     }
 
     function useStuffData(response) {
-      console.log('"' + response + '"');
+      
     }
 
     function walkClickHandler(e) {
+      var target = e.target;
       var query = '';
-      var lat = e.target.getAttribute('latitude');
-      var long = e.target.getAttribute('longitude');
+      var lat = target.getAttribute('latitude');
+      var long = target.getAttribute('longitude');
 
       query += 'long=' + long + '&lat=' + lat;
 

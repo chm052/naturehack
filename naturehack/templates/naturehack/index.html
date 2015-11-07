@@ -4,11 +4,141 @@
     <meta charset="utf-8">
     <title>Nature Hack: Hikr</title>
     <link rel="stylesheet" href="dist/main.css">
-    <script src="node_modules/uxhr/uxhr.js"></script>
   </head>
   <body>
     <h1>Hikr</h1>
     <div id="container"></div>
   </body>
-  <script src="frontend/index.js"></script>
+  <script>
+    'use strict';
+
+    // Put uxhr directly in this file because django and static files...wut
+    (function (root, factory) {
+      if (typeof exports === 'object') {
+        module.exports = factory();
+      } else if (typeof define === 'function' && define.amd) {
+        define('uxhr', factory);
+      } else {
+        root.uxhr = factory();
+      }
+    }(this, function () {
+
+      "use strict";
+
+      return function (url, data, options) {
+
+        data = data || '';
+        options = options || {};
+
+        var complete = options.complete || function(){},
+          success = options.success || function(){},
+          error = options.error || function(){},
+          headers = options.headers || {},
+          method = options.method || 'GET',
+          sync = options.sync || false,
+          req = (function() {
+
+            if (typeof 'XMLHttpRequest' !== 'undefined') {
+
+              // CORS (IE8-9)
+              if (url.indexOf('http') === 0 && typeof XDomainRequest !== 'undefined') {
+                return new XDomainRequest();
+              }
+
+              // local, CORS (other browsers)
+              return new XMLHttpRequest();
+
+            } else if (typeof 'ActiveXObject' !== 'undefined') {
+              return new ActiveXObject('Microsoft.XMLHTTP');
+            }
+
+          })();
+
+        if (!req) {
+          throw new Error ('Browser doesn\'t support XHR');
+        }
+
+        // serialize data?
+        if (typeof data !== 'string') {
+          var serialized = [];
+          for (var datum in data) {
+            serialized.push(datum + '=' + data[datum]);
+          }
+          data = serialized.join('&');
+        }
+
+        // set timeout
+        if ('ontimeout' in req) {
+          req.ontimeout = +options.timeout || 0;
+        }
+
+        // listen for XHR events
+        req.onload = function () {
+          complete(req.responseText, req.status);
+          success(req.responseText);
+        };
+        req.onerror = function () {
+          complete(req.responseText);
+          error(req.responseText, req.status);
+        };
+
+        // open connection
+        req.open(method, (method === 'GET' && data ? url+'?'+data : url), !sync);
+
+        // set headers
+        for (var header in headers) {
+          req.setRequestHeader(header, headers[header]);
+        }
+
+        // send it
+        req.send(method !== 'GET' ? data : null);
+
+        return req;
+      };
+
+    }));
+
+
+    // Get the data
+    var url = '../naturehack';
+
+    uxhr(url, '', {
+      method: 'GET',
+      complete: complete,
+      success: success,
+      error: error
+    });
+
+    function complete (response, status) {
+      console.log('request complete', status);
+    }
+
+    function success (response) {
+      console.log('"' + response + '"');
+      createWalks(response);
+    }
+
+    function error (response, status) {
+      console.log('"' + response + '"', status);
+    }
+
+    function createWalks(walks) {
+      var doc = document;
+      var item;
+      var hikrWalkList = doc.createElement('ul');
+
+      hikrWalkList.classList.add('hikr__walks');
+
+      walks.forEach(function(walk) {
+        item = doc.createElement('li');
+        item.classList.add('hikr__walks-item');
+        item.innerHTML = walk.name;
+        hikrWalkList.appendChild(item);
+      });
+
+      return hikrWalkList;
+    }
+
+    var mock = [{lat: 174.8656943777268, name: "CIRCUIT TRACK MATIU", long: -41.25547727765185}, {lat: 174.86416062697066, name: "Road to Circuit Track", long: -41.25831435774681}, {lat: 174.8660373791062, name: "Southern Summit Track", long: -41.25963291993241}, {lat: 174.86567057352957, name: "Workshop to VC Track", long: -41.256484419270315}, {lat: 174.86512994666623, name: "Memorial Track", long: -41.25474276763705}, {lat: 174.86650207849337, name: "BULLOCK TRACK", long: -41.2559556336113}, {lat: 174.86744419896112, name: "DEGAUSSING STATION TRACK", long: -41.256334556932664}, {lat: 174.70736657777832, name: "Makara Carpark to Gun Emplacements", long: -41.218407491659924}, {lat: 174.6947224810965, name: "MAKARA MERIDIAN ROAD SECTION", long: -41.23012942670318}, {lat: 174.68940575482617, name: "Makara Road End to Opau Stream mouth", long: -41.233250561610774}];
+  </script>
 </html>

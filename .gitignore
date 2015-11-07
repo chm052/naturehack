@@ -1,3 +1,6 @@
 *.pyc
 .idea/
 *.swp
+node_modules/
+*-debug.log
+dist/

@@ -1,0 +1,30 @@
+{
+  "name": "naturehack",
+  "version": "0.0.1",
+  "description": "Naturehack competetion",
+  "main": "frontend/index.js",
+  "scripts": {
+    "clean": "rm -r dist/*",
+    "css": "node-sass frontend/scss/main.scss dist/main.css",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chm052/naturehack"
+  },
+  "keywords": [
+    "naturehack"
+  ],
+  "author": "twoowuv",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chm052/naturehack/issues"
+  },
+  "homepage": "https://github.com/chm052/naturehack",
+  "devDependencies": {
+    "node-sass": "^3.4.1"
+  },
+  "dependencies": {
+    "uxhr": "^1.0.6"
+  }
+}

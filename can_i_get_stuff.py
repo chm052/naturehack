@@ -1,4 +1,6 @@
 import json
+from GBIFOccurrencesLib import OccurrenceSearchController
+from AtlasOfLivingAustraliaOccurrencesLib import OccurrenceController
 
 class TracksResourceLocation:
   layer = 753
@@ -86,7 +88,7 @@ class FloraResourceSearcher:
         self.search_controller = OccurrenceSearchController(self.username, self.not_password)
 
     def search(self):
-        return ugh.get_occurrence_search_search({
+        return self.search_controller.get_occurrence_search_search({
             'decimalLatitude': self.x,
             'decimalLongitude': self.y,
             'limit': self.limit,
@@ -111,7 +113,7 @@ class FloraBuilder:
   def __init__(self, floraDict):
     self.floraDict = floraDict
 
-  def getFlora(self):
+  def getItems(self):
     flora = []
     for florum in self.floraDict['results']:
       flora.append(Flora(florum['decimalLatitude'],
@@ -122,19 +124,32 @@ class FloraBuilder:
     return flora
 
 
-import requests
-import json
+class FaunaResourceSearcher(FloraResourceSearcher):
 
-from GBIFOccurrencesLib.Controllers import OccurrenceSearchController
+    def __init__(self, lat, lon):
+        self.x = long
+        self.y = lat
+        self.search_controller = OccurrenceController()
 
-ugh = OccurrenceSearchController('caitlinhmiller@gmail.com','uI5wk4UxaoUd52Q')
-#print ugh.get_occurrence_search_search({'country':'NZ', 'year':'2015', 'limit':1})
+    def search(self):
+        return self.search_controller.get_occurrence_search({
+            'decimalLatitude': self.x,
+            'decimalLongitude': self.y,
+            'limit': self.limit,
+            'radius':self.radius,
+        })
 
-# flora = FloraResourceSearcher(43, 171)
-# results = FloraBuilder(flora.search()).getTracks()
-#
-#
-# for result in results:
-#     print result
-#print results
+class FaunaBuilder(FloraBuilder):
+    def getItems(self):
+        flora = []
+        #print self.floraDict
+        for florum in self.floraDict['occurrences']:
+            flora.append(Flora(florum['decimalLatitude'],
+                    florum['decimalLongitude'],
+                    'Bird',
+                    florum['raw_scientificName'],
+                    ''))
+        return flora
 
+class Fauna(Flora):
+    pass

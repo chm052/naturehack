@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^naturehack/stuff$', views.stuff, name='stuff'),
     url(r'^index.*$', views.index, name='index'),
     url(r'^naturehack/flora$', views.searchflora, name='searchflora'),
+    url(r'^naturehack/fauna$', views.searchfauna, name='searchfauna'),
 ]

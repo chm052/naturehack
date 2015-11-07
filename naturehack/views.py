@@ -3,7 +3,9 @@ from django.shortcuts import render
 import requests
 from json import JSONEncoder
 import json
-from can_i_get_stuff import TracksResourceLocation, TracksBuilder, FloraResourceSearcher, FloraBuilder
+from can_i_get_stuff import TracksResourceLocation, TracksBuilder, \
+                FloraResourceSearcher, FloraBuilder, \
+                FaunaResourceSearcher, FaunaBuilder
 
 class DeepEncoder(JSONEncoder):
     def default(self, o):
@@ -35,7 +37,14 @@ def searchflora(request):
     lat = float(request.GET.get('lat'))
     long = float(request.GET.get('long'))
     flora = FloraResourceSearcher(lat, long)
-    results = FloraBuilder(flora.search()).getFlora()
+    results = FloraBuilder(flora.search()).getItems()
     jsonDict = {"response": results}
     return JsonResponse(jsonDict, encoder=DeepEncoder)
 
+def searchfauna(request):
+    lat = float(request.GET.get('lat'))
+    long = float(request.GET.get('long'))
+    fauna = FaunaResourceSearcher(lat, long)
+    results = FaunaBuilder(fauna.search()).getItems()
+    jsonDict = {"response": results}
+    return JsonResponse(jsonDict, encoder=DeepEncoder)

@@ -111,6 +111,14 @@
         display: inline-block;
       }
 
+      .hikr__more-info-link {
+        color: #B7B1B1;
+        font-style: italic;
+        font-weight: normal;
+        font-size: 0.8em;
+        margin-left: 0.5em;
+      }
+
       .hikr__walks-item {
         border-radius: 3px;
       }
@@ -355,12 +363,19 @@
         labelEl.innerHTML = species.genericName;
         labelEl.setAttribute('for', species.genericName);
 
+        var moreInfoLink = doc.createElement('a');
+        moreInfoLink.classList.add('hikr__more-info-link');
+        moreInfoLink.setAttribute('href', species.references);
+        moreInfoLink.setAttribute('target', '_blank');
+        moreInfoLink.innerHTML = 'more info...';
+
         var iconEl = doc.createElement('em')
         iconEl.classList.add('hikr__checkoff-icon');
         iconEl.classList.add('hikr__checkoff-icon--' + species.type);
 
         item.appendChild(checkbox);
         item.appendChild(labelEl);
+        item.appendChild(moreInfoLink);
         item.appendChild(iconEl);
 
         var toDestroy = Array.from(document.getElementsByClassName('hikr__walks-item'));

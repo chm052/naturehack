@@ -95,7 +95,7 @@
       }
 
       .hikr__checkoff-item em,
-      .hikr__checkoff-item div,
+      .hikr__checkoff-item label,
       .hikr__checkoff-item input {
         display: inline-block;
       }
@@ -335,18 +335,20 @@
 
         var checkbox = doc.createElement('input');
         checkbox.setAttribute('type', 'checkbox');
+        checkbox.setAttribute('id', species.genericName);
         checkbox.classList.add('hikr__checkoff-check');
 
-        var nameEl = doc.createElement('div');
-        nameEl.classList.add('hikr__checkoff-name');
-        nameEl.innerHTML = species.genericName;
+        var labelEl = doc.createElement('label');
+        labelEl.classList.add('hikr__checkoff-name');
+        labelEl.innerHTML = species.genericName;
+        labelEl.setAttribute('for', species.genericName);
 
         var iconEl = doc.createElement('em')
         iconEl.classList.add('hikr__checkoff-icon');
         iconEl.classList.add('hikr__checkoff-icon--' + species.type);
 
         item.appendChild(checkbox);
-        item.appendChild(nameEl);
+        item.appendChild(labelEl);
         item.appendChild(iconEl);
 
         var toDestroy = Array.from(document.getElementsByClassName('hikr__walks-item'));

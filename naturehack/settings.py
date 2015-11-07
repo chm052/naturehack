@@ -52,11 +52,13 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'naturehack.urls'
 
+PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [PROJECT_PATH + '/templates/'],
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -68,8 +70,9 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'naturehack.wsgi.application'
+TEMPLATE_DIRS = [PROJECT_PATH + '/templates/']
 
+WSGI_APPLICATION = 'naturehack.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases

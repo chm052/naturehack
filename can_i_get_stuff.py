@@ -73,3 +73,4 @@ class TracksBuilder:
       tracks.append(Track(track['properties']['DESCRIPTION'], avg[0], avg[1]))
 
     return tracks
+

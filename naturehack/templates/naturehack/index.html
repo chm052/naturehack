@@ -34,7 +34,7 @@
         background-color: #525265;
         background-image: url('http://www.estero.co.nz/new/wp-content/uploads/2014/03/45901_new-zealand.jpg');
         background-repeat: no-repeat;
-        background-size: cover;
+        background-size: 100%;
       }
 
       article, aside, details, figcaption, figure,
@@ -48,6 +48,10 @@
 
       input, select {
         vertical-align:middle;
+      }
+
+      button:focus {
+        outline: none;
       }
 
       /* HIKR */
@@ -91,6 +95,15 @@
       .hikr__checkoff-item div,
       .hikr__checkoff-item input {
         display: inline-block;
+      }
+
+      .hikr__walks-item {
+        border-radius: 3px;
+      }
+
+      .selected {
+        background: white;
+        color: #444;
       }
 
       .hikr__checkoff-icon--bird {
@@ -335,6 +348,7 @@
 
         var toDestroy = Array.from(document.getElementsByClassName('hikr__walks-item'));
         toDestroy.forEach(function(node) {
+          node.classList.remove('selected');
           var child = node.querySelector('ul');
           if (child) {
             node.removeChild(child);
@@ -357,10 +371,11 @@
       uxhr(stuffUrl, query, {
         method: 'GET',
         complete: complete,
-        success: function(response) { 
+        success: function(response) {
           var res = JSON.parse(response);
           var hikrCheckoffList = createStuffList(res)
-          target.parentNode.appendChild(hikrCheckoffList); 
+          target.parentNode.classList.add('selected');
+          target.parentNode.appendChild(hikrCheckoffList);
         },
         error: error
       });

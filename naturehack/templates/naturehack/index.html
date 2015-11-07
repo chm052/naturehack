@@ -150,7 +150,7 @@
 
     // Get the data
     var walksUrl = '../naturehack';
-    var stuffUrl = '../stuff';
+    var stuffUrl = '../naturehack/stuff';
 
     uxhr(walksUrl, '', {
       method: 'GET',
@@ -160,7 +160,7 @@
     });
 
     function complete(response, status) {
-      console.log('request complete: ', status);
+      // console.log('request complete: ', status);
     }
 
     function error(response, status) {
@@ -179,13 +179,12 @@
     }
 
     function walkClickHandler(e) {
-      var query = '?=';
+      var query = '';
       var lat = e.target.getAttribute('latitude');
       var long = e.target.getAttribute('longitude');
 
       query += 'long=' + long + '&lat=' + lat;
 
-      console.log(query);
       uxhr(stuffUrl, query, {
         method: 'GET',
         complete: complete,

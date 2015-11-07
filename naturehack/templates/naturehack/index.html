@@ -3,7 +3,56 @@
   <head>
     <meta charset="utf-8">
     <title>Nature Hack: Hikr</title>
-    <link rel="stylesheet" href="dist/main.css">
+    <!-- RIP good code <link rel="stylesheet" href="dist/main.css"> -->
+    <style type="text/css">
+
+      /* RESETS */
+      html, body, div, span, object, iframe,
+      h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+      abbr, address, cite, code,
+      del, dfn, em, img, ins, kbd, q, samp,
+      small, strong, sub, sup, var,
+      b, i,
+      dl, dt, dd, ol, ul, li,
+      fieldset, form, label, legend,
+      table, caption, tbody, tfoot, thead, tr, th, td,
+      article, aside, canvas, details, figcaption, figure,
+      footer, header, menu, nav, section, summary,
+      time, mark, audio, video {
+        margin:0;
+        padding:0;
+        border:0;
+        outline:0;
+        font-size:100%;
+        vertical-align:baseline;
+        background:transparent;
+      }
+
+      body {
+        line-height:1;
+      }
+
+      article, aside, details, figcaption, figure, 
+      footer, header, menu, nav, section {
+        display:block;
+      }
+
+      ul {
+        list-style:none;
+      }
+
+      input, select {
+        vertical-align:middle;
+      }
+
+      /* HIKR */
+      button.btn {
+        background-color: transparent;
+        border: none;
+        padding: 5px 10px;
+      }
+
+    </style>
   </head>
   <body>
     <h1>Hikr</h1>
@@ -100,45 +149,76 @@
 
 
     // Get the data
-    var url = '../naturehack';
+    var walksUrl = '../naturehack';
+    var stuffUrl = '../stuff';
 
-    uxhr(url, '', {
+    uxhr(walksUrl, '', {
       method: 'GET',
       complete: complete,
-      success: success,
+      success: useWalksData,
       error: error
     });
 
-    function complete (response, status) {
-      console.log('request complete', status);
+    function complete(response, status) {
+      console.log('request complete: ', status);
     }
 
-    function success (response) {
-      console.log('"' + response + '"');
-      createWalks(response);
-    }
-
-    function error (response, status) {
+    function error(response, status) {
       console.log('"' + response + '"', status);
     }
 
-    function createWalks(walks) {
+    function useWalksData(response) {
+      // console.log('"' + response + '"');
+      var container = document.getElementById('container');
+      var walksList = createWalksList(JSON.parse(response));
+      container.appendChild(walksList);
+    }
+
+    function useStuffData(response) {
+      console.log('"' + response + '"');
+    }
+
+    function walkClickHandler(e) {
+      var query = '?=';
+      var lat = e.target.getAttribute('latitude');
+      var long = e.target.getAttribute('longitude');
+
+      query += 'long=' + long + '&lat=' + lat;
+
+      console.log(query);
+      uxhr(stuffUrl, query, {
+        method: 'GET',
+        complete: complete,
+        success: useStuffData,
+        error: error
+      });
+    }
+
+    function createWalksList(walks) {
       var doc = document;
       var item;
+      var itemButton;
       var hikrWalkList = doc.createElement('ul');
 
       hikrWalkList.classList.add('hikr__walks');
 
-      walks.forEach(function(walk) {
+      walks.response.forEach(function(walk) {
         item = doc.createElement('li');
         item.classList.add('hikr__walks-item');
-        item.innerHTML = walk.name;
+
+        itemButton = doc.createElement('button');
+        itemButton.classList.add('hikr__walks-button', 'btn');
+        itemButton.innerHTML = walk.name;
+        itemButton.setAttribute('latitude', walk.lat);
+        itemButton.setAttribute('longitude', walk.long);
+        itemButton.onclick = walkClickHandler;
+
+        item.appendChild(itemButton);
         hikrWalkList.appendChild(item);
       });
 
       return hikrWalkList;
     }
 
-    var mock = [{lat: 174.8656943777268, name: "CIRCUIT TRACK MATIU", long: -41.25547727765185}, {lat: 174.86416062697066, name: "Road to Circuit Track", long: -41.25831435774681}, {lat: 174.8660373791062, name: "Southern Summit Track", long: -41.25963291993241}, {lat: 174.86567057352957, name: "Workshop to VC Track", long: -41.256484419270315}, {lat: 174.86512994666623, name: "Memorial Track", long: -41.25474276763705}, {lat: 174.86650207849337, name: "BULLOCK TRACK", long: -41.2559556336113}, {lat: 174.86744419896112, name: "DEGAUSSING STATION TRACK", long: -41.256334556932664}, {lat: 174.70736657777832, name: "Makara Carpark to Gun Emplacements", long: -41.218407491659924}, {lat: 174.6947224810965, name: "MAKARA MERIDIAN ROAD SECTION", long: -41.23012942670318}, {lat: 174.68940575482617, name: "Makara Road End to Opau Stream mouth", long: -41.233250561610774}];
   </script>
 </html>

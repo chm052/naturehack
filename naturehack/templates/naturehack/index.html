@@ -74,7 +74,44 @@
         max-width: 100%;
         min-width: 350px;
         width: 50%;
+      }
 
+      .hikr__checkoff {
+        background-color: #FFFFFF;
+        border-radius: 3px;
+        color: #444444;
+        padding: 5px;
+      }
+
+      .hikr__checkoff-item {
+        position: relative;
+        padding: 5px;
+      }
+
+      .hikr__checkoff-item em,
+      .hikr__checkoff-item div,
+      .hikr__checkoff-item input {
+        display: inline-block;
+      }
+
+      .hikr__checkoff-icon--bird {
+        background-image: url('https://raw.githubusercontent.com/chm052/naturehack/master/naturehack/templates/naturehack/bird.png');
+        height: 27px;
+        opacity: 0.4;
+        width: 25px;
+        top: 0;
+        position: absolute;
+        right: 0;
+      }
+
+      .hikr__checkoff-icon--plant {
+        background-image: url('https://raw.githubusercontent.com/chm052/naturehack/master/naturehack/templates/naturehack/plant.png');
+        height: 27px;
+        opacity: 0.4;
+        width: 25px;
+        top: 0;
+        position: absolute;
+        right: 0;
       }
 
       h1 {
@@ -208,7 +245,7 @@
       var walksList = createWalksList(JSON.parse(response));
       container.appendChild(walksList);
     }
-    
+
    function clearNode(node) {
      while (node.firstChild) {
        node.removeChild(node.firstChild);
@@ -234,12 +271,19 @@
 
         var iconEl = doc.createElement('em')
         iconEl.classList.add('hikr__checkoff-icon');
-        iconEl.classList.add(species.type);
-        iconEl.innerHTML = "hey"
+        iconEl.classList.add('hikr__checkoff-icon--' + species.type);
 
         item.appendChild(checkbox);
         item.appendChild(nameEl);
         item.appendChild(iconEl);
+
+        var toDestroy = Array.from(document.getElementsByClassName('hikr__walks-item'));
+        toDestroy.forEach(function(node) {
+          var child = node.querySelector('ul');
+          if (child) {
+            node.removeChild(child);
+          }
+        });
 
         hikrCheckoffList.appendChild(item);
       });

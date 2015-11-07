@@ -1,7 +1,6 @@
 'use strict';
 
-// var url = 'index.html/sub';
-var url = 'endpoint.html';
+var url = '/naturehack';
 
 uxhr(url, '', {
 		method: 'GET',

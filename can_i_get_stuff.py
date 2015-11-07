@@ -89,8 +89,8 @@ class FloraResourceSearcher:
 
     def search(self):
         return self.search_controller.get_occurrence_search_search({
-            'decimalLatitude': self.x,
-            'decimalLongitude': self.y,
+            'decimal_latitude': self.x,
+            'decimal_longitude': self.y,
             'limit': self.limit,
             'radius':self.radius,
         })
@@ -147,7 +147,7 @@ class FaunaBuilder(FloraBuilder):
         for florum in self.floraDict['occurrences']:
             flora.append(Flora(florum['decimalLatitude'],
                     florum['decimalLongitude'],
-                    'Bird',
+                    florum['raw_scientificName'],
                     florum['raw_scientificName'],
                     ''))
         return flora

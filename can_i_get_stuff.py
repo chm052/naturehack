@@ -74,3 +74,67 @@ class TracksBuilder:
 
     return tracks
 
+class FloraResourceSearcher:
+    username = 'caitlinhmiller@gmail.com'
+    not_password = 'uI5wk4UxaoUd52Q'
+    limit = 10
+    radius = 1
+
+    def __init__(self, lat, lon):
+        self.x = long
+        self.y = lat
+        self.search_controller = OccurrenceSearchController(self.username, self.not_password)
+
+    def search(self):
+        return ugh.get_occurrence_search_search({
+            'decimalLatitude': self.x,
+            'decimalLongitude': self.y,
+            'limit': self.limit,
+            'radius':self.radius,
+        })
+
+class Flora:
+  def __init__(self, lat, long, genericName, scientificName, references):
+    self.lat = lat
+    self.long = long
+    self.genericName = genericName
+    self.scienticName = scientificName
+    self.references = references
+
+  def asJson(self):
+    return json.dumps(self.__dict__)
+
+  def __str__(self):
+    return self.asJson()
+
+class FloraBuilder:
+  def __init__(self, floraDict):
+    self.floraDict = floraDict
+
+  def getFlora(self):
+    flora = []
+    for florum in self.floraDict['results']:
+      flora.append(Flora(florum['decimalLatitude'],
+                    florum['decimalLongitude'],
+                    florum['genericName'],
+                    florum['scientificName'],
+                    florum['references']))
+    return flora
+
+
+import requests
+import json
+
+from GBIFOccurrencesLib.Controllers import OccurrenceSearchController
+
+ugh = OccurrenceSearchController('caitlinhmiller@gmail.com','uI5wk4UxaoUd52Q')
+#print ugh.get_occurrence_search_search({'country':'NZ', 'year':'2015', 'limit':1})
+
+# flora = FloraResourceSearcher(43, 171)
+# results = FloraBuilder(flora.search()).getTracks()
+#
+#
+# for result in results:
+#     print result
+#print results
+

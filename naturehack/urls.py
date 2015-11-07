@@ -19,7 +19,5 @@ import views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', views.testhomepage, name='testhomepage'),
-    url(r'^sub/$', views.testsubpage, name='testsubpage'),
-    url(r'^sub/(?P<param>.*?)/$', views.testsubpageparams, name='testsubpageparams')
+    url(r'^naturehack$', views.homepage, name='homepage'),
 ]

@@ -1,9 +1,8 @@
-import requests
 import json
 
 class TracksResourceLocation:
   layer = 753
-  max_results = 5
+  max_results = 10
   key = '2342af39f38841248750a72eb5a1a0c5'
   radius = 20000  
 
@@ -22,7 +21,7 @@ class TracksResourceLocation:
             'radius': self.radius, 
             'x': self.x, 
             'y': self.y,
-            'geometry': 'false'
+            'geometry': 'true'
     }
 
 class Track:
@@ -34,20 +33,43 @@ class Track:
   def asJson(self):
     return json.dumps(self.__dict__)
 
+  def __str__(self):
+    return self.asJson()
+
+
+def zipper(coordlist):
+    return [float(sum(i))/len(i) for i in zip(*coordlist)]
+
+class MLSAverage:
+  def __init__(self, trackcoords):
+    self.trackcoords = trackcoords
+
+  def getAverage(self):
+    subavgs = []
+    for coordlist in self.trackcoords:
+          subavgs.append(zipper(coordlist))
+    return zipper(coordlist)
+
+class LSAverage:
+  def __init__(self, trackcoords):
+    self.trackcoords = trackcoords
+
+  def getAverage(self):
+    return zipper(self.trackcoords)
+
 class TracksBuilder:
   def __init__(self, tracksDict):
     self.tracksDict = tracksDict
 
   def getTracks(self):
-    for t in self.tracksDict['vectorQuery']['layers']['753']['features']:
-      print "track name: %s" % t['properties']['DESCRIPTION']
-    return []
+    tracks = []
+    for track in self.tracksDict['vectorQuery']['layers']['753']['features']:
+      geo = track['geometry']
 
-t = Track("Matiu", 123, 345)
-print t.asJson()
+      tracktype = geo['type']
+      trackcoords = geo['coordinates']
+      avgr =  MLSAverage(trackcoords) if tracktype == 'MultiLineString' else LSAverage(trackcoords)
+      avg = avgr.getAverage()
+      tracks.append(Track(track['properties']['DESCRIPTION'], avg[0], avg[1]))
 
-#41.2889 S, 174.7772 E is wellington
-loc = TracksResourceLocation(-41.2889, 174.7772)
-r = requests.get(loc.getUri(), loc.getRequestParams())
-print "response: %s" % r.status_code
-ts = TracksBuilder(r.json()).getTracks()
+    return tracks

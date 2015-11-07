@@ -89,6 +89,7 @@
   <body>
     <div id="container" class="hikr">
       <h1>Hikr</h1>
+        <button id="curr" class="current-location">Current Location</button>
     </div>
   </body>
   <script>
@@ -179,9 +180,25 @@
       };
 
     }));
+
     String.prototype.toProperCase = function () {
       return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
     };
+
+    function getLocation(callback) {
+        if (navigator.geolocation) {
+            return navigator.geolocation.getCurrentPosition(
+
+            function (position) {
+                var currLocation = {'type':'Location', 'lat':position.coords.latitude, 'long':position.coords.longitude};
+                callback(currLocation);
+            }
+
+            );
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
 
     // Get the data
     var walksUrl = '../naturehack';
@@ -193,6 +210,28 @@
       success: useWalksData,
       error: error
     });
+
+    var getLocationDataButton = document.getElementById('curr');
+    getLocationDataButton.onclick = currClickHandler;
+
+    function getLocationCallback(location) {
+      var query = '';
+      var lat = location['lat'];
+      var long = location['long'];
+
+      query += 'long=' + long + '&lat=' + lat;
+
+      uxhr(stuffUrl, query, {
+        method: 'GET',
+        complete: complete,
+        success: useStuffData,
+        error: error
+      });
+    }
+
+    function currClickHandler(e) {
+      getLocation(getLocationCallback);
+    }
 
     function complete(response, status) {
       // console.log('request complete: ', status);

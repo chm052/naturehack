@@ -20,4 +20,5 @@ import views
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^naturehack$', views.homepage, name='homepage'),
+    url(r'^index.*$', views.index, name='index'),
 ]

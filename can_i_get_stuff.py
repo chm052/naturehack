@@ -116,12 +116,13 @@ class FloraBuilder:
 
   def getItems(self):
     flora = []
+
     for florum in self.floraDict['results']:
       flora.append(Flora(florum['decimalLatitude'],
                     florum['decimalLongitude'],
                     florum['genericName'],
                     florum['scientificName'],
-                    florum['references']))
+                    "test"))
     return flora
 
 
@@ -144,6 +145,7 @@ class FaunaBuilder(FloraBuilder):
     def getItems(self):
         flora = []
         #print self.floraDict
+        print self.floraDict
         for florum in self.floraDict['occurrences']:
             flora.append(Fauna(florum['decimalLatitude'],
                     florum['decimalLongitude'],
